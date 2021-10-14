@@ -1,0 +1,4895 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ NOSA HEADER START
+
+ The contents of this file are subject to the terms of the NASA Open
+ Source Agreement (NOSA), Version 1.3 only (the "Agreement").  You may
+ not use this file except in compliance with the Agreement.
+
+ You can obtain a copy of the agreement at
+   docs/NASA_Open_Source_Agreement_1.3.txt
+ or
+   http://sscweb.gsfc.nasa.gov/WebServices/NASA_Open_Source_Agreement_1.3.txt.
+
+ See the Agreement for the specific language governing permissions
+ and limitations under the Agreement.
+
+
+ When distributing Covered Code, include this NOSA HEADER in each
+ file and include the Agreement file at
+ docs/NASA_Open_Source_Agreement_1.3.txt.  If applicable, add the
+ following below this NOSA HEADER, with the fields enclosed by
+ brackets "[]" replaced with your own identifying information:
+ Portions Copyright [yyyy] [name of copyright owner]
+
+ NOSA HEADER END
+
+ Copyright (c) 2011-2012 United States Government as represented by
+ the National Aeronautics and Space Administration. No copyright is
+ claimed in the United States under Title 17, U.S.Code. All Other
+ Rights Reserved.
+
+-->
+
+
+<!-- Satellite Situation Center (SSC) RESTful Web service schema -->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://sscweb.gsfc.nasa.gov/schema"
+    xmlns="http://sscweb.gsfc.nasa.gov/schema"
+    elementFormDefault="qualified">
+	<!--
+  The following was an attempt to get xjc to put @XmlRootElement 
+  annotations on all the classes generated from complexTypes.
+xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+jaxb:version="2.0"
+xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+jaxb:extensionBindingPrefixes="xjc">
+
+  <xsd:annotation>
+    <xsd:appinfo>
+      <jaxb:globalBindings>
+        <xjc:simple />
+      </jaxb:globalBindings>
+    </xsd:appinfo>
+  </xsd:annotation>
+-->
+
+	<!--
+  Note: classes that are to be serialized by JAX-RS need to be 
+  defined as an xsd:element (xjc will not generate a class with
+  an XmlRootElement annotation for a xsd:complexType).
+-->
+
+	<!--  xjc will not generate a class with an XmlRootElement annotation for this
+  <xsd:element name="GroundStationResponse" type="GroundStationResponse">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        SSC GroundStation response.
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+-->
+
+	<xsd:element name="GroundStationResponse">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				SSC GroundStation response.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:annotation>
+				<xsd:documentation xml:lang="en">
+					SSC GroundStation response type.
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:sequence>
+				<xsd:element name="GroundStation"
+					   type="GroundStation"
+					   minOccurs="1" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">
+							GroundStation description.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<!-- xjc will not generate a class with an XmlRootElement annotation for this
+  <xsd:element name="ObservatoryResponse" type="ObservatoryResponse">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        SSC Observatory response.
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+-->
+
+	<xsd:element name="ObservatoryResponse">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				SSC Observatory response.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:annotation>
+				<xsd:documentation xml:lang="en">
+					SSC Observatory response type.
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:sequence>
+				<xsd:element name="Observatory"
+					   type="ObservatoryDescription"
+					   minOccurs="1" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">
+							Observatory description.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="ObservatoryDescription">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				SSC Observatory type.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="SatelliteDescription">
+				<xsd:sequence>
+					<xsd:element name="ResourceId"
+						type="xsd:string"
+						   minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Satellite resource identifier.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="GroupId"
+						type="xsd:string"
+						   minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Observatory group identifier.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="SatelliteDescription">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				SatelliteDescription type.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Id"
+				   type="xsd:string"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Satellite identifier.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Name"
+				   type="xsd:string"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Satellite Name.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Resolution"
+				   type="xsd:int"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Trajectory resolution.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="StartTime"
+				   type="xsd:dateTime"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Start time.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="EndTime"
+				   type="xsd:dateTime"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						End time.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Geometry"
+				   type="xsd:string"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						URL of the file containing the recommended X3D
+						geometry description for rendering the satellite.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="TrajectoryGeometry"
+				   type="xsd:string"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						URL of the file containing the recommended X3D
+						geometry description for rendering the satellite's
+						trajectory.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="Request" type="Request">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				SSC request base type.
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+
+	<xsd:complexType name="Request">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				SSC request base type.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Description" type="xsd:string"
+				   minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A textual description of this request.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="TimeInterval" type="TimeInterval"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Time interval of request.  If the requested time interval
+						is outside the range of information available at SSC, the
+						results will only include what is available at SSC.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="BFieldModel" type="BFieldModel"
+				   minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Magnetic field Model.  If a
+						BFieldModel is not given and B-Field tracing is specified,
+						a default model of IGRF and Tsyganenko 89c with KP
+						values of 3-,3,3+ is used.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="LocationRequest" type="LocationRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				SSC location request.
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+
+	<xsd:complexType name="LocationRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				SSC query request type.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="Request">
+				<xsd:sequence>
+					<xsd:element name="Satellites" type="SatelliteSpecification"
+					   minOccurs="1" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Requested satellites.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="SatelliteSpecification">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Satellite specification type.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Id" type="xsd:string"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Selected satellite identifier.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ResolutionFactor" type="xsd:int"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Resolution factor.  Include 1 out of every ResolutionFactor
+						values.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="DataRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				SSC data request.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="LocationRequest">
+					<xsd:sequence>
+						<xsd:element name="OutputOptions"
+									 type="OutputOptions"
+								minOccurs="1" maxOccurs="1">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									Output options.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="RegionFilterOptions"
+									 type="RegionFilterOptions"
+								minOccurs="0" maxOccurs="1">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									Region filter options.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="LocationFilterOptions"
+									 type="LocationFilterOptions"
+								minOccurs="0" maxOccurs="1">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									Location filter options.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<!-- 
+                FormatOptions should be added in a subclass 
+                (DataFileRequest) but xjc will not add the 
+                @XmlRootElement to DataRequest and DataFileRequest
+                if they are <complexType>s.
+            -->
+						<xsd:element name="FormatOptions"
+									 type="FormatOptions"
+								minOccurs="0" maxOccurs="1">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									Format options.  Presences indicates that results
+									are to be returned in a file.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="OutputOptions">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Data request output options.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="AllLocationFilters" type="xsd:boolean"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether all or just one or more of the specified
+						location filters must be satisfied.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="CoordinateOptions"
+						 type="FilteredCoordinateOptions"
+					minOccurs="1" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies the coordinate options.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RegionOptions"
+						 type="RegionOptions"
+					minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies the region options.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ValueOptions"
+						 type="ValueOptions"
+					minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies the value options.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DistanceFromOptions"
+						 type="DistanceFromOptions"
+					minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies the distance-from options.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MinMaxPoints"
+						 type="xsd:int" default="2"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Number of points used to determine minima or maxima values.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="BFieldTraceOptions"
+						 type="BFieldTraceOptions"
+					minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Magnetic field trace options.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="CoordinateOptions">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Coordinate system component options.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="CoordinateSystem" type="CoordinateSystem"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies the coordinate system.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Component" type="CoordinateComponent"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies the coordinate system component.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="RegionOptions">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Listing options for regions.  "Regions" denotes a naming
+				convention of three dimensional and two dimensional zones that
+				are associated with a spacecraft's location for a particular
+				point in time. The RegionOptions provides a means to specify
+				the type(s) of regions that can be generated as output. All
+				four region types can be associated with a spacecraft at any
+				given time.  A description of these regions is available at the
+				http://sscweb.gsfc.nasa.gov/help/Lregions_shp.html.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Spacecraft"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the spacecraft regions are to be
+						included in the output.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RadialTracedFootpoint"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the radial traced footpoint regions are
+						to be included in the output.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="NorthBTracedFootpoint"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the north B traced footpoint regions are
+						to be included in the output.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SouthBTracedFootpoint"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the south B traced footpoint regions are
+						to be included in the output.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="ValueOptions">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Value listing options.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="RadialDistance"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the radial distance value is to be
+						included in the listing.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="BFieldStrength"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the B field strength value is
+						to be included in the listing.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DipoleLValue"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the dipole L value is
+						to be included in the listing.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DipoleInvLat"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the dipole invariant latitude is
+						to be included in the listing.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="DistanceFromOptions">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				"Distance from" listing options.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="NeutralSheet"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the distance between the spacecraft and
+						the neutral sheet is to be included in the output.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="BowShock"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the distance between the spacecraft and
+						the bow shock is to be included in the output.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MPause"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the distance between the spacecraft and
+						the magnetopause is to be included in the output.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="BGseXYZ"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies that the magnetic field strength in the GSE XYZ
+						directions are to be included in the output.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="BFieldTraceOptions">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				B-field trace listing options.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="CoordinateSystem"
+						 type="CoordinateSystem"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies the coordinate system
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Hemisphere"
+						 type="Hemisphere"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Magnetic hemisphere.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="FootpointLatitude"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the footpoint latitude value are
+						to be included in the listing.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="FootpointLongitude"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the footpoint longitude value are
+						to be included in the listing.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="FieldLineLength"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the field line length values are
+						to be included in the listing.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="Hemisphere">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Hemisphere region.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="South">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Southern hemisphere.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="North">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Northern hemisphere.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="FilteredCoordinateOptions">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Coordinate system component options that include location
+				filters.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="CoordinateOptions">
+				<xsd:sequence>
+					<xsd:element name="Filter" type="LocationFilter"
+						   minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Specifies filter criteria.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="RegionFilterOptions">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Data request region filter options.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="SpaceRegions"
+						 type="SpaceRegionsFilterOptions"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies the space region filter options.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RadialTraceRegions"
+						 type="MappedRegionFilterOptions"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies the radial trace region filter options.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MagneticTraceRegions"
+						 type="MappedRegionFilterOptions"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies the magnetic trace region filter options.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="SpaceRegionsFilterOptions">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Space regions filter options.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="InterplanetaryMedium"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the interplanetary medium region filter
+						is to be applied.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DaysideMagnetosheath"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the dayside magnetosheath region filter
+						is to be applied.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="NightsideMagnetosheath"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the nightside magnetosheath region filter
+						is to be applied.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DaysideMagnetosphere"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the dayside magnetosphere region filter
+						is to be applied.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="NightsideMagnetosphere"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the nightside magnetosphere region filter
+						is to be applied.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PlasmaSheet"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the plasma sheet region filter
+						is to be applied.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="TailLobe"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the tail lobe region filter
+						is to be applied.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="HighLatitudeBoundaryLayer"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the high latitude boundary layer region
+						filter is to be applied.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="LowLatitudeBoundaryLayer"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the low latitude boundary layer region
+						filter is to be applied.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DaysidePlasmasphere"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the dayside plasmasphere region
+						filter is to be applied.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="NightsidePlasmasphere"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the nightside plasmasphere region
+						filter is to be applied.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="MappedRegionFilterOptions">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Space regions filter options.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Cusp" type="HemisphereOptions"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the cusp hemisphere region is to be
+						included.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Cleft" type="HemisphereOptions"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the cleft hemisphere region is to be
+						included.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="AuroralOval" type="HemisphereOptions"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the auroral oval hemisphere region is
+						to be included.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PolarCap" type="HemisphereOptions"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the polar cap hemisphere region is to be
+						included.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MidLatitude" type="HemisphereOptions"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the mid latitude hemisphere region is
+						to be included.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="LowLatitude"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the low latitude hemisphere region is
+						to be included.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="HemisphereOptions">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Hemisphere listing options.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="North" type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the northern hemisphere region is to be
+						included.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="South" type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the southern hemisphere region is to be
+						included.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="LocationFilterOptions">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Data request location filter options.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="AllFilters"
+						 type="xsd:boolean" default="true"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether all or just one or more of the specified
+						filters must be satisfied.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DistanceFromCenterOfEarth"
+						 type="LocationFilter"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies the "distance from center of earth" filter.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MagneticFieldStrength"
+						 type="LocationFilter"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies the "magnetic field strength" filter.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DistanceFromNeutralSheet"
+						 type="LocationFilter"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies the "distance from neutral sheet" filter.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DistanceFromBowShock"
+						 type="LocationFilter"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies the "distance from bow shock" filter.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DistanceFromMagnetopause"
+						 type="LocationFilter"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies the "distance from magnetopause" filter.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DipoleLValue"
+						 type="LocationFilter"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies the "distance from dipole L value" filter.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DipoleInvariantLatitude"
+						 type="LocationFilter"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies the "distance from dipole invariant latitude"
+						filter.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="LocationFilter">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Location filter listing options.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Minimum"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the minimum value is to be marked by a
+						"v" in the listing.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Maximum"
+						 type="xsd:boolean" default="false"
+					minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies whether the maximum value is to be marked by a
+						"v" in the listing.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="LowerLimit" type="xsd:double"
+					minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies the lower limit of values that are to be
+						included in the listing.  The value is kilometer or
+						degrees as applicable.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="UpperLimit" type="xsd:double"
+					minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies the upper limit of values that are to be
+						included in the listing.  The value is kilometer or
+						degrees as applicable.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<!-- 
+          Upon further review, it seems as if the Lower/UpperDate 
+          elements below should be eliminated (local-time limits
+          should be passed in Lower/UpperLimit elements [values
+          ranging from 0.0 to 24.0]).
+      <xsd:element name="LowerDate" type="xsd:dateTime"
+              minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Specifies the lower limit of Calendar values that are to
+            be included in the listing.  
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="UpperDate" type="xsd:dateTime"
+              minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Specifies the upper limit of Calendar values that are to
+            be included in the listing.  
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      -->
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="GraphRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				SSC graph request.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="LocationRequest">
+					<xsd:sequence>
+						<xsd:element name="GraphOptions"
+									 type="GraphOptions"
+								minOccurs="1" maxOccurs="1">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									Graph options.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="GraphOptions" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Abstract SSC graphing options.
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:complexType>
+
+	<xsd:complexType name="OrbitGraphOptions">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				SSC orbit graphing request options.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="GraphOptions">
+				<xsd:sequence>
+					<xsd:element name="CoordinateSystem" type="CoordinateSystem"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Coordinate system.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Combined" type="xsd:boolean"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Combine individual graphs into a single image.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="XyView" type="xsd:boolean"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Request X-Y view.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="XzView" type="xsd:boolean"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Request X-Z view.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="YzView" type="xsd:boolean"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Request Y-Z view.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="XrView" type="xsd:boolean"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Request X-R view.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="SunToRight" type="xsd:boolean"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Orient graph so that the Sun is to the right.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ManualScale" type="GraphScale"
+						minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Scaling of graph.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="EvenAxesScale" type="xsd:boolean"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Whether even axes scales or even axes lengths
+								should be employed.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ShowBowShockMagnetopause"
+						type="xsd:boolean"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Whether bow shock and mangetopause should be shown.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="SolarWindPressure" type="xsd:float"
+						minOccurs="0" maxOccurs="1" default="2.1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Value of solar wind pressure to use when displaying
+								the bow shock and magnetopause (units of nP).
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ImfBz" type="xsd:float"
+						minOccurs="0" maxOccurs="1" default="0.0">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								IMF Bz value to use when displaying the bow shock
+								and magnetopause (units of nT).
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="FormatOptions" type="GraphFormatOptions"
+						minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Output format options.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="GraphScale">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Manual scale values for an SSC graphing request.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="MinX" type="xsd:int" default="-60"
+				minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Minimum X value.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MaxX" type="xsd:int" default="60"
+				minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Maximum X value.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MinY" type="xsd:int" default="-60"
+				minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Minimum Y value.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MaxY" type="xsd:int" default="60"
+				minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Maximum Y value.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MinZ" type="xsd:int" default="-60"
+				minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Minimum Z value.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MaxZ" type="xsd:int" default="60"
+				minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Maximum Z value.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MinR" type="xsd:int" default="-60"
+				minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Minimum R value.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MaxR" type="xsd:int" default="60"
+				minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Maximum R value.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="GraphFormatOptions">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Manual scale values for an SSC graphing request.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="CustomLabelOptions" type="GraphLabelOptions"
+				minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies custom labels.  If not present, use auto labeling.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="CharSize" type="xsd:float" default="1.2"
+				minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies the character size.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SymbolSize" type="xsd:float" default="0.8"
+				minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies the symbol and tick size.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="GraphLabelOptions">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Custom label options for an SSC graph request.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="DayOfYearLabelFrequency" type="xsd:int"
+				default="1"
+				minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies frequency of day-of-year labels.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MonthDayOfMonthLabel" type="xsd:boolean"
+				default="false"
+				minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies format of day-of-year labels.  A false value
+						specifies that a day-of-year value should label day-of-year
+						tick marks.  A true value indicates that a
+						month/day-of-month value is to label day-of-year tick marks.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="HourLabelFrequency" type="xsd:int"
+				default="12"
+				minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies frequency of hour labels.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="HourTickMarkFrequency" type="xsd:int"
+				default="6"
+				minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies frequency of hour tick labels.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MinuteLabelFrequency" type="xsd:int"
+				default="0"
+				minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies frequency of minute labels.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MinuteTickMarkFrequency" type="xsd:int"
+				default="0"
+				minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Specifies frequency of minute tick labels.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="MapProjectionGraphOptions">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				SSC map projection graphing request options.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="GraphOptions">
+				<xsd:sequence>
+					<xsd:element name="Trace" type="MapProjectionTrace"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Specifies the trace options.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="CoordinateSystem"
+						type="ProjectionCoordinateSystem"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Specifies the coordinate system options.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ShowContinents" type="xsd:boolean"
+						default="true"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Specifies whether continents are to be displayed on
+								the graph.  This option is only effective for
+								coordinateSystem = GEO.  Continents are not shown
+								for other coordinate systems.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Projection" type="MapProjection"
+						default="Cylindrical"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Specifies the projection option.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="GroundStations" type="xsd:string"
+						minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								GEO ground stations to display.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="MapLimits" type="MapLimits"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Map limits.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="PolarMapOrientation"
+						type="PolarMapOrientation" default="Equatorial"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Polar map orientation.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="LongitudeVerticalDown"
+						type="xsd:float" default="0.0"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Longitude plotted as vertical down value.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Title" type="xsd:string"
+						default="Mapped Plot"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Title.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="FormatOptions" type="GraphFormatOptions"
+						minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Specifies output label options.  An absent value
+								indicates that default values should be used.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:simpleType name="MapProjectionTrace">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Mapped projection trace options supported by SSC.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="BFieldNorth">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A trace from the satellite's location along the
+						intersection north magnetic field line.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="BFieldSouth">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A trace from the satellite's location along the
+						intersection south magnetic field line.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Radial">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						A radial trace from the center of the Earth to the
+						satellite.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ProjectionCoordinateSystem">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Enumeration representing the different coordinate systems
+				supported by SSC mapped projection graphs.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="CoordinateSystem">
+			<xsd:enumeration value="Geo">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						GEO coordinate system.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Gm">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						GM coordinate system.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Sm">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						SM coordinate system.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="MapProjection">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Enumeration representing the map projections supported by SSC.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Azimuthal">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Azimuthal projection.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Cylindrical">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Cylindrical projection.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Mercator">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Mercator projection.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Molleweide">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Molleweide projection.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Orthographic">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Orthographic projection.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Stereographic">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Stereographic projection.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="MapLimits">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Map limit values for an SSC graphing request.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="MinLatitude" type="xsd:float" default="-90.0"
+				minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Minimum Latitude value.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MaxLatitude" type="xsd:float" default="90.0"
+				minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Maximum Latitude value.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MinLongitude" type="xsd:float" default="-180.0"
+				minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Minimum Longitude value.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MaxLongitude" type="xsd:float" default="180.0"
+				minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Maximum Longitude value.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="PolarMapOrientation">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Enumeration representing the polar map orientations supported
+				by SSC.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Equatorial">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Equatorial orientation.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NorthPole">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						North pole orientation.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SouthPole">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						South pole orientation.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="TimeSeriesGraphOptions">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				SSC time series graphing request options.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="GraphOptions">
+				<xsd:sequence>
+					<xsd:element name="CoordinateOptions" type="CoordinateOptions"
+						minOccurs="1" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Specifies the coordinate options.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ValueOptions" type="ValueOptions"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Specifies the value options.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="DistanceFromOptions"
+						type="DistanceFromOptions"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Specifies the distance-from options.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="BFieldTraceOptions"
+						type="BFieldTraceOptions"
+						minOccurs="1" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Specifies the B field trace options.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:element name="KmlRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				SSC KML request.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="LocationRequest">
+					<xsd:sequence>
+						<xsd:element name="Trajectory"
+									 type="xsd:boolean" default="true"
+								minOccurs="1" maxOccurs="1">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									Specifies whether trajectory information is requested.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="NorthBFieldTraceFootpoint"
+									 type="xsd:boolean" default="false"
+								minOccurs="1" maxOccurs="1">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									Specifies whether north B-Field trace information is
+									requested.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="SouthBFieldTraceFootpoint"
+									 type="xsd:boolean" default="false"
+								minOccurs="1" maxOccurs="1">
+							<xsd:annotation>
+								<xsd:documentation xml:lang="en">
+									Specifies whether south B-Field trace information is
+									requested.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="QueryRequest">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				An element wrapper for QueryRequestType so xjc will annotate
+				the class with @XmlRootElement.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Request" type="QueryRequestType"
+					 minOccurs="1" maxOccurs="1">
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="QueryRequestType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				SSC query request type.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="Request">
+				<xsd:sequence>
+					<xsd:element name="ExecuteOptions" type="ExecuteOptions"
+						   minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Query execution options.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ResultOptions" type="ResultOptions"
+						   minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Query result options.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ConditionOperator"
+						type="ConditionOperator"
+						minOccurs="1" maxOccurs="1" default="All">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Operator for combining conditions.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Conditions" type="Condition"
+						   minOccurs="1" maxOccurs="9" >
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Query condition.  Consists of a SatelliteCondition along with
+								one of the following:
+								- GroundStationCondition (and optionally a RegionCondition)
+								- LeadSatelliteCondition (and optionally a RegionCondition)
+								- RegionCondition
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="ExecuteOptions">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Query execution options.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="WaitForResult" type="xsd:boolean"
+				   minOccurs="1" maxOccurs="1" default="true" >
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Indicates whether the results are returned in the
+						response to this request or whether the results become
+						available at a later time.
+					</xsd:documentation>
+					<!--
+      ??? more about 202 status ???
+-->
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ResultEmailAddress" type="EmailAddress"
+				   minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						When WaitForResult is false, e-mail address where a
+						"query complete" e-mail message is to be sent.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="EmailAddress">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Time interval.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern
+				value="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="ResultOptions">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Query result options.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="IncludeQueryInResult" type="xsd:boolean"
+				   minOccurs="1" maxOccurs="1" default="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Indicates whether to include a copy of the query in
+						the results.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="QueryResultType" type="QueryResultType"
+				   minOccurs="1" maxOccurs="1" default="Xml">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Result representation.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="FormatOptions" type="FormatOptions"
+				   minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Format options.  Only applicable when QueryResultType
+						is Listing.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="TraceCoordinateSystem"
+				   type="TraceCoordinateSystem"
+				   minOccurs="1" maxOccurs="1" default="Geo">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Trace coordinate system.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SubSatelliteCoordinateSystem"
+				   type="CoordinateSystem"
+				   minOccurs="1" maxOccurs="1" default="Geo">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Sub-satellite coordinate system.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SubSatelliteCoordinateSystemType"
+				   type="CoordinateSystemType"
+				   minOccurs="1" maxOccurs="1" default="Spherical">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Sub-satellite coordinate system type.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="QueryResultType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Query result representation enumeration.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Xml">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Results are an XML representation (see QueryResponse).
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Listing">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Results are to be in a textual representation (more likely
+						to be preferred by more humans than the XML representation).
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="FormatOptions">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Listing Query result format options.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="DateFormat" type="DateFormat"
+				   minOccurs="1" maxOccurs="1" default="yyyy_ddd">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Date format.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="TimeFormat" type="TimeFormat"
+				   minOccurs="1" maxOccurs="1" default="hh_hhhh">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Time format.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DistanceFormat" type="DistanceFormat"
+				   minOccurs="1" maxOccurs="1" default="IntegerKm">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Distance format.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DistanceDigits" type="xsd:int"
+				   minOccurs="0" maxOccurs="1" default="1">
+				<!--
+             minInclusive="0" maxExclusive="???">
+-->
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Number of decimal places when DistanceFormat is
+						ScientificNotationKm.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DegreeFormat" type="DegreeFormat"
+				   minOccurs="1" maxOccurs="1" default="Decimal">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Degree format.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DegreeDigits" type="xsd:int"
+				   minOccurs="0" maxOccurs="1" default="1">
+				<!--
+             minInclusive="0" maxExclusive="???">
+-->
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Number of decimal places when DegreeFormat is dd_ddd.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="LatLonFormat" type="LatLonFormat"
+				   minOccurs="1" maxOccurs="1" default="Lat90Lon360">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Latitude/longitude format.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Cdf" type="xsd:boolean"
+				   minOccurs="0" maxOccurs="1" default="false">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Whether the output should be a CDF type file.  Only
+						supported for location requests.  Conjunction query
+						requests do not support CDF output.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="LinesPerPage" type="xsd:int"
+				   minOccurs="1" maxOccurs="1" default="55">
+				<!--
+             minInclusive="0">
+-->
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Lines per page.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="TimeInterval">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Time interval.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Start" type="xsd:dateTime"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Begining time of interval.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="End" type="xsd:dateTime"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Ending time of interval.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="BFieldModel">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Magnetic field Model.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="InternalBFieldModel"
+				   type="InternalBFieldModel"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Internal B-Field model.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ExternalBFieldModel" type="ExternalBFieldModel"
+				   minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						External B-Field model.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="TraceStopAltitude" type="xsd:int"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Stop altitude for downward tracing of field lines.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="InternalBFieldModel">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Internal B-Field Model enumeration.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="IGRF">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						IGRF internal magnetic field model.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="IGRF-10">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Deprecated.  Use IGRF instead.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SimpleDipole">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Simple dipole internal magnetic field model.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="ExternalBFieldModel" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Abstract External B-Field Model type.
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:complexType>
+
+	<xsd:complexType name="Tsyganenko96BFieldModel">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Tsyganenko 96 external B-Field model.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ExternalBFieldModel">
+				<xsd:sequence>
+					<xsd:element name="SolarWindPressure" type="xsd:double"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Solar wind pressure (range: 0 - 30 nP, default=2.1).
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="DstIndex" type="xsd:int"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Disturbance Storm Time (DST) index
+								(range: -400 - 200 nT, default=-20).
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ByImf" type="xsd:double"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								BY Interplanetary Magnetic Field (IMF)
+								(range: -100 - 100 nT, default=0.0).
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="BzImf" type="xsd:double"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								BZ Interplanetary Magnetic Field (IMF)
+								(range: -100 - 100 nT, default=0.0).
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="Tsyganenko89cBFieldModel">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Tsyganenko 89c external B-Field model.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ExternalBFieldModel">
+				<xsd:sequence>
+					<xsd:element name="KeyParameterValues"
+						type="Tsyganenko89cKp"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Key Parameter values.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:simpleType name="Tsyganenko89cKp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Tsyganenko89c key parameter values enumeration.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="KP0_0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						0,0+ KP values.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KP1_1_1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						1-,1,1+ KP values.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KP2_2_2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						2-,2,2+ KP values.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KP3_3_3">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						3-,3,3+ KP values.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KP4_4_4">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						4-,4,4+ KP values.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KP5_5_5">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						5-,5,5+ KP values.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KP6">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						>=6 KP values.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="Tsyganenko87BFieldModel">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Tsyganenko 87 external B-Field model.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ExternalBFieldModel">
+				<xsd:sequence>
+					<xsd:element name="KeyParameterValues"
+						type="Tsyganenko87Kp"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Key Parameter values.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:simpleType name="Tsyganenko87Kp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Tsyganenko87 key parameter values enumeration.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="KP0_0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						0,0+ KP values.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KP1_1_1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						1-,1,1+ KP values.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KP2_2_2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						2-,2,2+ KP values.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KP3_3_3">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						3-,3,3+ KP values.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KP4_4_4">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						4-,4,4+ KP values.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="KP5">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						>=5- KP values.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ConditionOperator">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Logical Condition Operator enumeration.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="All">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						All conditions must be meet.  Logical AND of all conditions.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Any">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Any condition must be meet.  Logical OR of all conditions.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="Condition" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Abstract occupancy/conjunction condition.
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:complexType>
+
+	<!--
+  <xsd:complexType name="Conditions">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Query conditions.  Consists of a SatelliteCondition along with 
+        one of the following:
+            - GroundStationCondition (and optionally a RegionCondition)
+            - LeadSatelliteCondition (and optionally a RegionCondition)
+            - RegionCondition
+        This element exists due to limitations with JAX-RS 1.11 (more 
+        likely JAXB ?.?) which cannot unmarshal Condition sub-type
+        elements.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="SatelliteCondition" 
+             type="SatelliteCondition"
+             minOccurs="1" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Satellites of interest.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="GroundStationCondition" 
+             type="GroundStationCondition"
+             minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Ground Station condition.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="LeadSatelliteCondition" 
+             type="LeadSatelliteCondition"
+             minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Lead Satellite condition.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="RegionCondition" 
+             type="RegionCondition"
+             minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Region condition.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+-->
+
+	<xsd:complexType name="SatelliteCondition">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Satellite condition type.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="Condition">
+				<xsd:sequence>
+					<xsd:element name="Satellite" type="Satellite"
+						   minOccurs="1" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Satellite specification.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="SatelliteCombination" type="xsd:int">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								The minimum number of statellites that must satisfy this
+								condition.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="Satellite">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Satellite specification.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Id"
+				   type="xsd:string"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Selected satellite identifier.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="BFieldTraceDirection"
+				   type="BFieldTraceDirection"
+				   minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Magnetic field tracing direction.  This value is only
+						required if magnetic field tracing is specified in a
+						RegionCondition.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="BFieldTraceDirection">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Trace direction enumeration.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="SameHemisphere">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Trace in the same magnetic hemisphere.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="OppositeHemisphere">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Trace in the opposite magnetic hemisphere.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NorthHemisphere">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Trace in the north magnetic hemisphere.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SouthHemisphere">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Trace in the south magnetic hemisphere.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="EitherHemisphere">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Trace in either or both magnetic hemispheres.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="GroundStationCondition">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Ground Station condition.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="Condition">
+				<xsd:sequence>
+					<xsd:element name="GroundStation" type="GroundStationConjunction"
+						   minOccurs="1" maxOccurs="4">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Selected ground stations.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="CoordinateSystem"
+						   type="TraceCoordinateSystem"
+						   minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Ground Station Coordinate System.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="TraceType"
+						   type="TraceType"
+						   minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Trace type.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="Coordinates" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Coordinates type.
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:complexType>
+
+	<xsd:simpleType name="Latitude">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Inclination angle measured from reference plane in degrees.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:double">
+			<xsd:minInclusive value="-90.0" />
+			<xsd:maxInclusive value="90.0" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="Longitude">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Azimuth angle of an orthogonal projection on a
+				reference plane that passes through the origin and
+				is orthogonal to the zenith (measured in degrees).
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:double">
+			<xsd:minInclusive value="-180.0" />
+			<xsd:maxInclusive value="360.0" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="AltitudeGeographicCoordinates">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Geographic Coordinates with altitude.
+			</xsd:documentation>
+			<!--
+        ??? Should Units be here or external ???
+-->
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="SurfaceGeographicCoordinates">
+				<xsd:sequence>
+					<xsd:element name="Altitude" type="xsd:double"
+						   minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Altitude.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="RadiusGeographicCoordinates">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Geographic Coordinates with radius.
+			</xsd:documentation>
+			<!--
+        ??? Should Units be here or external ???
+-->
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="SurfaceGeographicCoordinates">
+				<xsd:sequence>
+					<xsd:element name="Radius" type="xsd:double"
+						   minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Radius.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="SurfaceGeographicCoordinates">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Surface (altitude implicitly surface) Geographic Coordinates.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="Coordinates">
+				<xsd:sequence>
+					<xsd:element name="Latitude" type="Latitude"
+						   minOccurs="1" maxOccurs="1">
+					</xsd:element>
+					<xsd:element name="Longitude" type="Longitude"
+						   minOccurs="1" maxOccurs="1">
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="CartesionCoordinates">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Cartesian Coordinates.
+			</xsd:documentation>
+			<!--
+        ??? Should Units be here or external ???
+-->
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="Coordinates">
+				<xsd:sequence>
+					<xsd:element name="X" type="xsd:double"
+						   minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								X coordinate value.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Y" type="xsd:double"
+						   minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Y coordinate value.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Z" type="xsd:double"
+						   minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Z coordinate value.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="GroundStation">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Ground Station.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Id" type="GroundStationId"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Ground station identifier.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Name" type="xsd:string"
+				   minOccurs="1" maxOccurs="1">
+				<!--
+             length="???"
+-->
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Ground station name.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Location"
+				   type="SurfaceGeographicCoordinates"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Ground station Location.  This value should be in the
+						CoordinateSystem specified in the enclosing
+						GroundStationCondition.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="GroundStationConjunction">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Ground Station conjunction.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="GroundStation">
+				<xsd:sequence>
+					<xsd:element name="ConjunctionArea"
+						   type="ConjunctionArea"
+						   minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Conjunction Area.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:simpleType name="ConjunctionAreaType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Conjuction area enumeration.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="GeoBox">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						GEO box.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GmBox">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						GM box.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Distance">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Distance.
+					</xsd:documentation>
+					<!--
+            ??? is circle the same ???
+-->
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="CoordinateSystemType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Coordinate System type enumeration.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Spherical">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Spherical coordinate system.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Cartesian">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Cartesian coordinate system.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="TraceCoordinateSystem">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Surface Coordinate System enumeration.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="CoordinateSystem">
+			<xsd:enumeration value="Geo">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						GEO coordinate system.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Gm">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						GM coordinate system.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="CoordinateSystem">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Coordinate System enumeration.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Geo">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						GEO coordinate system.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Gm">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						GM coordinate system.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Gse">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						GSE coordinate system.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Gsm">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						GSM coordinate system.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Sm">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						SM coordinate system.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GeiTod">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						GEI TOD coordinate system.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GeiJ2000">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						GEI J2000 coordinate system.  This value is not supported in
+						a conjunction query request.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="CoordinateComponent">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Coordinate component enumeration.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="X">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						X or first coordinate component
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Y">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Y or second coordinate component
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Z">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Z or third coordinate component
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Lat">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Latitude coordinate component
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Lon">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Longitude coordinate component
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Local_Time">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Local Time coordinate component
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="TraceType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Trace Type enumeration.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="BField">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Magnetic field tracing to the Earth of the spacecraft(s)
+						selected.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Radial">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Direct radial tracing to the Earth of the trajectory for
+						the spacecraft(s) selected.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="LeadSatelliteCondition">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Lead satellite condition.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="Condition">
+				<xsd:sequence>
+					<xsd:element name="Satellite" type="Satellite"
+						   minOccurs="1" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Lead satellites.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ConjunctionArea" type="ConjunctionArea"
+						   minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Conjunction Area.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="TraceType"
+						   type="TraceType"
+						   minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Trace type.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="ConjunctionArea" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Abstract conjunction area.
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:complexType>
+
+	<xsd:complexType name="BoxConjunctionArea">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Box shaped conjunction area.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ConjunctionArea">
+				<xsd:sequence>
+					<xsd:element name="CoordinateSystem"
+						   type="TraceCoordinateSystem"
+						   minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Coordinate system.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="DeltaLatitude" type="xsd:double"
+						   minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Delta Latitude in degrees.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="DeltaLongitude" type="xsd:double"
+						   minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Delta Longitude in degrees.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="DistanceConjunctionArea">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Distance conjunction area.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ConjunctionArea">
+				<xsd:sequence>
+					<xsd:element name="Radius" type="xsd:double"
+						   minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Radius in km.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="RegionCondition">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Spase Region condition.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="Condition">
+				<xsd:sequence>
+					<xsd:element name="ConditionOperator"
+						type="ConditionOperator"
+						minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Operator for combining region conditions.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="SpaceRegions" type="SpaceRegions"
+						   minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Spacecraft regions.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="RadialTraceRegions"
+						   type="TraceRegions"
+						   minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Radial trace regions.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="BFieldTraceRegions"
+						   type="TraceRegions"
+						   minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Magnetic field trace regions.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="SpaceRegions">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Space Regions.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="SpacecraftRegion"
+				   type="SpaceRegionType"
+				   minOccurs="1" maxOccurs="11">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Selection of distinct spacecraft regions.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="SpaceRegionType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Space region enumeration.  See
+				http://sscweb.gsfc.nasa.gov/users_guide/ssc_reg_doc.html
+				for a description.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="InterplanetaryMedium">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Interplanetary Medium region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="DaysideMagnetosheath">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Dayside Magnetosheath region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NightsideMagnetosheath">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Nightside Magnetosheath region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="DaysideMagnetosphere">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Dayside Magnetosphere region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NightsideMagnetosphere">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Nightside Magnetosphere region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PlasmaSheet">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Plasma Sheet region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TailLobe">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Tail Lobe region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="HighLatitudeBoundaryLayer">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						High Latitude Boundary Layer region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LowLatitudeBoundaryLayer">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Low Latitude Boundary Layer region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="DaysidePlasmasphere">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Dayside Plasmasphere region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NightsidePlasmasphere">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Nightside Plasmasphere region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+
+	<xsd:simpleType name="MapRegion">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Map region enumeration.  See
+				http://sscweb.gsfc.nasa.gov/users_guide/ssc_reg_doc.html
+				for a description.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="NorthCusp">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Northern Cusp region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SouthCusp">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Southern Cusp region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NorthCleft">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Northern Cleft region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SouthCleft">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Southern Cleft region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NorthAuroralOval">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Northern Auroral Oval region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SouthAuroralOval">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Southern Auroral Oval region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NorthPolarCap">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Northern Polar Cap region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SouthPolarCap">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Southern Polar Cap region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NorthMidLatitude">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Northern Mid Latitude region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SouthMidLatitude">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Southern Mid Latitude region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LowLatitude">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Low Latitude region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="None">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						No region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="TraceRegions">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Trace Map Regions.  See
+				http://sscweb.gsfc.nasa.gov/users_guide/ssc_reg_doc.html
+				for a description.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Cusp"
+				   type="HemisphereRegions"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Cusp region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Cleft"
+				   type="HemisphereRegions"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Cleft region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="AuroralOval"
+				   type="HemisphereRegions"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Auroral Oval region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PolarCap"
+				   type="HemisphereRegions"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Polar Cap region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MidLatitude"
+				   type="HemisphereRegions"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Mid Latitude region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="LowLatitude"
+				   type="xsd:boolean"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Low Latitude region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="HemisphereRegions">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Hemisphere Regions selection.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="North"
+				   type="xsd:boolean"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						North hemisphere region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="South"
+				   type="xsd:boolean"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						South hemisphere region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="DateFormat">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Date format enumeration.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="yyyy_ddd">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						yyyy ddd date format.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="yy_mm_dd">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						yy/mm/dd date format.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="yy_Mmm_dd">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						yy-Mmm-dd date format.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<!-- 
+        With an enumeration value of yy_MMM_dd, 
+        xjc (version hudson-jaxb-ri-2.1-548) silently produces no 
+        DateFormatType code.
+      -->
+			<xsd:enumeration value="yy_CMMM_dd">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						yy-MMM-dd date format.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="TimeFormat">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Time format enumeration.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="hh_hhhh">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						hh.hhhh time format.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="hh_mm_ss">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						hh:mm:ss time format.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="hh_mm">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						hh:mm time format.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="DistanceFormat">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Distance format enumeration.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Re">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Earth Radii.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Km">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						kilometers.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="IntegerKm">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Integer kilometers.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ScientificNotationKm">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Scientific Notation kilometers.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="DegreeFormat">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Degree format enumeration.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Decimal">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						dd.ddd... format.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Minutes">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						ddd dd' format.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MinutesSeconds">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						ddd dd' dd" format.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="LatLonFormat">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Latitude/Longitude format enumeration.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Lat90Lon360">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Latitude (-90,+90), Longitude (0, 360)
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Lat90Lon180">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Latitude (-90,+90), Longitude (-180,+180)
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Lat90SnLon180We">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Latitude (90S,90N), Longitude (180W,180E)
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:element name="Response">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				An SSC response.
+				An element wrapper for Result so xjc will annotate the
+				class with @XmlRootElement.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Result" type="Result"
+					 minOccurs="1" maxOccurs="1">
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="Result">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				A result from SSC.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="StatusCode" type="ResultStatusCode"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Result status code.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="StatusSubCode" type="ResultStatusSubCode"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Result status sub-code.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="StatusText" type="xsd:string"
+				   minOccurs="1" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Result status text.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="ResultStatusCode">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Result status code.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Success">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Sucessful status.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ConditionalSuccess">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Conditionally sucessful status.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Error">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Error status.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ResultStatusSubCode">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Result status sub-code.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Success">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Sucessful status.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MissingRequest">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						The required request object was missing or null.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MissingSatellites">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						The required set of satellites was missing or null.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="InvalidBeginTime">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						The required begin time value was missing or invalid.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="InvalidEndTime">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						The required end time value was missing or invalid.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="InvalidSatellite">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						The specified satellite is invalid or null.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="InvalidTimeRange">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						The request contained an invalid time range.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="InvalidResolutionFactor">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Invalid resolution factor value.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MissingOutputOptions">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						The OutputOptions were missing or null.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MissingCoordOptions">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						The OutputOptions contain a null element in non-empty List
+						of FilteredCoordinateOptions.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MissingCoordSystem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						The CoordinateOptions contain a null value for the
+						CoordinateSystem.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="InvalidCoordSystem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Invalid CoordinateSystem value.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MissingCoordComponent">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						The CoordinateOptions contain a null value for the
+						CoordinateComponent.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MissingGraphOptions">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						The GraphOptions were missing or null.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MissingCoordinateSystem">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						The required CoordinateSystem value is missing or null.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MissingCoordinateComponent">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						The required CoordinateComponent value is missing or null.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ServerError">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						An unexpected error occurred on the server.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="AbstractResult">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Abstract result of a request to the Satellite Situation Center.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="Result">
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="FileResult">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				The result of a location request to the Satellite Situation
+				Center.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="AbstractResult">
+				<xsd:sequence>
+					<xsd:element name="Files" type="FileDescription"
+						   minOccurs="1" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								References to the files containing the requested
+								satellite data.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="DataResult">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				The result of a data request to the Satellite Situation Center.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="AbstractResult">
+				<xsd:sequence>
+					<xsd:element name="Data" type="SatelliteData"
+						   minOccurs="1" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Requested satellite data.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="SatelliteData">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Information about a satellite.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Id" type="SatelliteId"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Identifies the satellite this data for.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Coordinates" type="CoordinateData"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Coordinate data
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Time" type="xsd:dateTime"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Time associated with each data point.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="BTraceData" type="BTraceData"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						B-field trace data.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RadialLength" type="xsd:double"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Distance from center of Earth.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MagneticStrength" type="xsd:double"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Magnetic field strength.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="NeutralSheetDistance" type="xsd:double"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Distance from neutral sheet.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="BowShockDistance" type="xsd:double"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Distance from bow shock.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MagnetoPauseDistance" type="xsd:double"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Distance from magneto pause.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DipoleLValue" type="xsd:double"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Dipole L value.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DipoleInvariantLatitude" type="xsd:float"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Dipole invariant latitude value.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SpacecraftRegion" type="SpaceRegion"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Spacecraft region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RadialTracedFootpointRegions"
+				   type="FootpointRegion"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Radial traced footpoint regions.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="BGseX" type="xsd:double"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						B GSE X value.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="BGseY" type="xsd:double"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						B GSE Y value.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="BGseZ" type="xsd:double"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						B GSE Z value.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="NorthBTracedFootpointRegions"
+				   type="FootpointRegion"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						North B traced footpoint regions.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SouthBTracedFootpointRegions"
+				   type="FootpointRegion"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						South B traced footpoint regions.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="CoordinateData">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Satellite coordinate data.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="CoordinateSystem" type="CoordinateSystem"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Identifies the coordinate system.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="X" type="xsd:double"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						X component values of the Cartesion coordinate set.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Y" type="xsd:double"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Y component values of the Cartesion coordinate set.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Z" type="xsd:double"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Z component values of the Cartesion coordinate set.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Latitude" type="xsd:float"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Latitude component values of the spherical coordinate set.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Longitude" type="xsd:float"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Longitude component values of the spherical coordinate set.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="LocalTime" type="xsd:double"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Local time value of the spherical coordinate set.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="BTraceData">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				B-field trace data.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="CoordinateSystem" type="CoordinateSystem"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Identifies the coordinate system.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Hemisphere" type="Hemisphere"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Magnetic Hemisphere.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Latitude" type="xsd:float"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						B-Trace latitude values.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Longitude" type="xsd:float"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						B-Trace longitude values.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ArcLength" type="xsd:double"
+				   minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						B-Trace arc length values.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="SpaceRegion">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				The different regions of space supported by SSC.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="InterplanetaryMedium">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Interplanetary medium.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="DaysideMagnetosheath">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Dayside magnetosheath.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NightsideMagnetosheath">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Nightside magnetosheath.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="DaysideMagnetosphere">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Dayside magnetosphere.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NightsideMagnetosphere">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Nightside magnetosphere.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PlasmaSheet">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Plasma sheet.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TailLobe">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Tail Lobe.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LowLatitudeBoundaryLayer">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Low-latitude boundary layer.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="HighLatitudeBoundaryLayer">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						High-latitude boundary layer.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="DaysidePlasmasphere">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Dayside plasmasphere.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NightsidePlasmasphere">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Nightside plasmasphere.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="FootpointRegion">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				The different footpoint regions supported by SSC.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="NotApplicable">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Region value for magnetic field traced footpoints
+						indicating that the satellite was outside the magnetic
+						field and therefore no field line trace could be performed.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NorthCusp">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Northern cusp region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SouthCusp">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Southern cusp region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NorthCleft">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Northern cleft region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SouthCleft">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Southern cleft region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NorthAuroralOval">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Northern auroral oval region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SouthAuroralOval">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Southern auroral oval region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NorthPolarCap">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Northern polar cap region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SouthPolarCap">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Southern polar cap region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NorthMidLatitude">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Northern mid-latitude region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SouthMidLatitude">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Southern mid-latitude region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="LowLatitude">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Low-latitude region.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:element name="QueryResponse">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				SSC query response type.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="QueryResult" type="QueryResult"
+					   minOccurs="1" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:documentation xml:lang="en">
+							Query results.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="QueryResult">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Query result.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="AbstractResult">
+				<xsd:sequence>
+					<xsd:element name="QueryRequest" type="QueryRequestType"
+						   minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Original query request.  Only include if original
+								request set
+								QueryRequest/ResultOptions/IncludeQueryInResult to true.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="QueryDataResult">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Query result.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="QueryResult">
+				<xsd:sequence>
+					<xsd:element name="Conjunction"
+								 type="Conjunction"
+						   minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Conjunction description.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="QueryFileResult">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Query result containing a reference to the file(s)
+				containing the results.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="QueryResult">
+				<xsd:sequence>
+					<xsd:element name="Files"
+								 type="FileDescription"
+						   minOccurs="1" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Files containing conjunction description.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="Conjunction">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				SSC query result.  Description of conjuction.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="TimeInterval" type="TimeInterval"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Time interval of query.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SatelliteDescription"
+				   type="SatelliteConjunction"
+				   minOccurs="1" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Description of satellite at time of conjuction.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="SatelliteId">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Satellite identifier.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<!--
+      <xsd:length value="???">
+      <xsd:pattern value="[a-zA-Z]???">
+-->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="GroundStationId">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Ground Station identifier.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<!--
+      <xsd:length value="???">
+      <xsd:pattern value="[a-zA-Z]???">
+-->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="SatelliteConjunction">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Description of satellite's conjunction.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Satellite" type="SatelliteId"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Satellite identifier.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Description" type="ConjunctionDescription"
+				   minOccurs="1" maxOccurs="2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Description of satellite at the begining and ending
+						conjunction times.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="ConjunctionDescription">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Description of satellite's conjunction.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="SpacecraftRegion"
+				   type="SpaceRegionType"
+				   minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Satellite's region location at time of conjunction.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RadialTracedRegion"
+				   type="MapRegion"
+				   minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Satellite's radial trace region location at time of
+						conjunction.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="NorthBTracedRegion"
+				   type="MapRegion"
+				   minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Satellite's north magnetice field traced region location
+						at time of conjunction.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SouthBTracedRegion"
+				   type="MapRegion"
+				   minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Satellite's south magnetice field traced region location
+						at time of conjunction.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Location"
+				   type="Coordinates"
+				   minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Satellite's location at time of conjunction.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="TraceDescription"
+				   type="TraceDescription"
+				   minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Trace Description at time of conjunction.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="TraceDescription">
+		<xsd:sequence>
+			<xsd:annotation>
+				<xsd:documentation xml:lang="en">
+					Radial or B-Field Trace Description.
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:element name="Location"
+				   type="Coordinates"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Satellite's trace location.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ArcLength"
+				   type="xsd:double"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Satellite's trace arc length.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Target"
+				   type="TraceTarget"
+				   minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Endpoint target of trace.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="TraceTarget" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Endpoint target of trace.
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:complexType>
+
+	<xsd:complexType name="SatelliteTarget">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Satellite target of trace.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="TraceTarget">
+				<xsd:sequence>
+					<xsd:element name="LeadSatellite"
+						   type="SatelliteId"
+						   minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Lead Satellite identifier.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Distance"
+						   type="xsd:double"
+						   minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Satellite's distance to the lead satellite
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="GroundStationTarget">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Ground Station target of trace.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="TraceTarget">
+				<xsd:sequence>
+					<xsd:element name="GroundStation"
+						   type="GroundStationId"
+						   minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en">
+								Ground station identifier.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="FileDescription">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Description of a file.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Name" type="xsd:string"
+				minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Name of file (usually a URL).
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MimeType" type="xsd:string"
+				minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						MIME type of file.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Length" type="xsd:long"
+				minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Length of file in bytes.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="LastModified" type="xsd:dateTime"
+				minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en">
+						Time when the file was last modified.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>
+
