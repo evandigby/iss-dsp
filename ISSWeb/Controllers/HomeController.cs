@@ -1,12 +1,14 @@
 ﻿using ISSWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using SSC;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -127,8 +129,11 @@ namespace ISSWeb.Controllers
             var resultSerializer = new XmlSerializer(typeof(Response));
 
             var result = resultSerializer.Deserialize(await response.Content.ReadAsStreamAsync());
+            
+            var resultObj = JsonConvert.SerializeObject(result);
 
-            return new OkObjectResult(result);
+            JsonResult jsonResult = Json(resultObj);
+            return jsonResult;
         }
     }
 }

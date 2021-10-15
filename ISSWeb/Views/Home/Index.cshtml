@@ -97,10 +97,11 @@
             const sphere = false;
 
             //fetch(`https://localhost:44336/Home/GetData?start=${startTime.toISOString()}&end=${endTime.toISOString()}`)
-            fetch(`https://issweb.azurewebsites.net/Home/GetData?start=${startTime.toISOString()}&end=${endTime.toISOString()}`)
+            fetch(`/Home/GetData?start=${startTime.toISOString()}&end=${endTime.toISOString()}`)
                 .then(resp => resp.json())
-                .then(resp => {
-                    if (sphere) {
+                .then(res => {
+                    const resp = JSON.parse(res.toLowerCase())
+                    if (sphere) {                       
                         resp.result.data.forEach(dataResult => {
                             dataResult.coordinates.forEach(coordinate => {
                                 for (let i = 0; i < coordinate.x.length; i++) {
@@ -121,14 +122,13 @@
                                 }
                             });
                         });
-
                     }
                     else {
                         const loader = new FBXLoader();
 
                         // https://nasa3d.arc.nasa.gov/detail/iss-6628
-                        //loader.load('img/ISSComplete1.fbx', function (object) {
-                        loader.load('https://hackathonstg.blob.core.windows.net/fbx/ISSComplete1.fbx', function (object) {
+                        loader.load('img/ISSComplete1.fbx.txt', function (object) {
+                        //loader.load('https://hackathonstg.blob.core.windows.net/fbx/ISSComplete1.fbx.txt', function (object) {
                             resp.result.data.forEach(dataResult => {
                                 dataResult.coordinates.forEach(coordinate => {
                                     for (let i = 0; i < coordinate.x.length; i++) {
