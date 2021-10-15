@@ -15,13 +15,166 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Net.Http.Formatting;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.File;
+using Azure.Storage;
+using Azure.Storage.Files.DataLake;
+using CsvHelper;
+using CsvHelper.Configuration;
+using System.Globalization;
+using System.Net;
 
-namespace DSPSupport
+namespace Api
 {
-    public static class ISSLocations
+    public static partial class ISSLocations
     {
+        private static string DataLakeAccountName => Environment.GetEnvironmentVariable("DataLakeAccountName");
+        private static string DataLakeAccountKey => Environment.GetEnvironmentVariable("DataLakeAccountKey");
+        private static string DataLakeFileSystemName => Environment.GetEnvironmentVariable("DataLakeFileSystemName"); 
+
+
+        [FunctionName("AddLatLon")]
+        public static async Task<IActionResult> AddLatLon([HttpTrigger(AuthorizationLevel.Function, "POST", Route = null)] HttpRequest req)
+        {
+            AddLatLonRequest data;
+            try
+            {
+                data = await JsonSerializer.DeserializeAsync<AddLatLonRequest>(req.Body);
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(ex);
+            }
+
+
+            if (Path.GetExtension(data.FileName).ToLowerInvariant() != ".csv")
+                return new OkObjectResult(Enumerable.Empty<LogEntry>());
+
+            StorageSharedKeyCredential sharedKeyCredential =
+                    new StorageSharedKeyCredential(DataLakeAccountName, DataLakeAccountKey);
+
+            string dfsUri = "https://" + DataLakeAccountName + ".dfs.core.windows.net";
+
+            var dataLakeServiceClient = new DataLakeServiceClient(new Uri(dfsUri), sharedKeyCredential);
+
+            DataLakeFileSystemClient fileSystemClient = dataLakeServiceClient.GetFileSystemClient(DataLakeFileSystemName);
+            DataLakeDirectoryClient directoryClient = fileSystemClient.GetDirectoryClient("parquet-output");
+
+            var file = directoryClient.GetFileClient(data.FileName);
+
+            if (!await file.ExistsAsync())
+            {
+                return new BadRequestObjectResult("No file at specified path");
+            }
+
+            var fileStream = await file.OpenReadAsync();
+
+            using var streamReader = new StreamReader(fileStream);
+
+            var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                HasHeaderRecord = false,
+            };
+
+            using var csvData = new CsvReader(streamReader, csvConfig);
+
+
+            csvData.Context.RegisterClassMap<LogEntryMap>();
+
+            var records = csvData.GetRecords<LogEntry>().ToList();
+
+            try
+            {
+                var outputEntries = await PopulateISSLocations(records);
+
+                DataLakeDirectoryClient outputDirectoryClient = fileSystemClient.GetDirectoryClient("latlon-output");
+
+                var outputFile = await outputDirectoryClient.CreateFileAsync(data.FileName);
+
+                var writeStream = await outputFile.Value.OpenWriteAsync(true);
+
+                using var textWriter = new StreamWriter(writeStream);
+
+                var outcsv = new CsvWriter(textWriter, csvConfig);
+
+                await outcsv.WriteRecordsAsync(outputEntries);
+
+                return new OkObjectResult(data);
+            }
+            catch (Exception ex)
+            {
+                return new ContentResult
+                {
+                    StatusCode = (int)HttpStatusCode.BadGateway,
+                    Content = ex.Message,
+                    ContentType = "text/plain"
+                };
+            }
+        }
+
+        public static async Task<IEnumerable<LogEntry>> PopulateISSLocations(IEnumerable<LogEntry> logEntries)
+        {
+            var output = logEntries
+                .OrderBy(e => e.SignalStart)
+                .ThenBy(e => e.SignalEnd)
+                .ToList();
+
+            var minDate = output.Min(logEntry => logEntry.SignalPeak);
+            var maxDate = output.Max(logEntry => logEntry.SignalPeak);
+
+            if (maxDate - minDate < TimeSpan.FromMinutes(2))
+            {
+                maxDate = minDate.AddMinutes(2);
+            }
+
+            var issData = await ISSClient.GetISSData(DateTime.SpecifyKind(minDate, DateTimeKind.Utc), DateTime.SpecifyKind(maxDate, DateTimeKind.Utc));
+
+            if (!(issData.Result is DataResult dataResult))
+            {
+                throw new Exception("invalid response from ISS API");
+            }
+
+
+            var issRecords = dataResult.Data.Single();
+            var issCoordinates = issRecords.Coordinates.Where(c => c.CoordinateSystem == CoordinateSystem.Gm).Single();
+
+            var issRecordTimes = issRecords.Time.Select(t => DateTime.SpecifyKind(t, DateTimeKind.Utc)).OrderBy(t => t).ToList();
+
+            var i = 0;
+
+
+            return output.Select(entry =>
+            {
+                for (; i < issRecordTimes.Count; i++)
+                {
+                    if (i + 1 == issRecordTimes.Count)
+                    {
+                        break;
+                    }
+
+                    var currDiff = Math.Abs((entry.SignalPeak - issRecordTimes[i]).TotalMilliseconds);
+                    var nextDiff = Math.Abs((entry.SignalPeak - issRecordTimes[i + 1]).TotalMilliseconds);
+                    if (nextDiff < currDiff)
+                        continue;
+                    else
+                        break;
+                }
+
+                return new LogEntry
+                {
+                    SignalStart = entry.SignalStart,
+                    SignalPeak = entry.SignalPeak,
+                    SignalEnd = entry.SignalEnd,
+                    SignalFrequency = entry.SignalFrequency,
+                    SignalPower = entry.SignalPower,
+                    Latitude = (decimal)issCoordinates.Latitude[i],
+                    Longitude = (decimal)issCoordinates.Longitude[i]
+                };
+            });
+        }
+
         [FunctionName("ISS")]
-        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req)
+        public static async Task<IActionResult> ISS([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req)
         {
             var start= req.Query["start"];
             var end = req.Query["end"];
@@ -38,76 +191,7 @@ namespace DSPSupport
             if ((endDate - startDate) < TimeSpan.FromMinutes(2))
                 return new BadRequestObjectResult("end date must be greater than or requal to 2 minutes later than start date");
 
-            var request = new DataRequest
-            {
-                Satellites = new SatelliteSpecification[]
-                {
-                    new SatelliteSpecification
-                    {
-                        Id = "iss",
-                        ResolutionFactor = 1
-                    }
-                },
-                TimeInterval = new TimeInterval
-                {
-                    Start = startDate,
-                    End = endDate
-                },
-                OutputOptions = new OutputOptions
-                {
-                    CoordinateOptions = new []
-                    {
-                        new FilteredCoordinateOptions
-                        {
-                            Component = CoordinateComponent.X,
-                            CoordinateSystem = CoordinateSystem.Geo,
-                        },
-                        new FilteredCoordinateOptions
-                        {
-                            Component = CoordinateComponent.Y,
-                            CoordinateSystem = CoordinateSystem.Geo,
-                        },
-                        new FilteredCoordinateOptions
-                        {
-                            Component = CoordinateComponent.Z,
-                            CoordinateSystem = CoordinateSystem.Geo,
-                        }
-                    }
-                }
-            };
-
-            XmlSerializer serializer = new XmlSerializer(typeof(DataRequest));
-
-            using var ms = new MemoryStream();
-
-            serializer.Serialize(ms, request);
-
-            ms.Position = 0;
-            using var client = new HttpClient();
-
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
-
-
-            var stringData = Encoding.UTF8.GetString(ms.ToArray());
-            ms.Position = 0;
-
-            var uri = new Uri("https://sscweb.gsfc.nasa.gov/WS/sscr/2/locations");
-
-            var response = await client.PostAsync(uri, new StringContent(stringData, Encoding.UTF8, "application/xml"));
-
-            if (!response.IsSuccessStatusCode)
-            {
-                return new ContentResult
-                {
-                    Content = await response.Content.ReadAsStringAsync(),
-                    ContentType = response.Headers.TryGetValues("Content-Type", out IEnumerable<string> output) ? output.First() : "text/html",
-                    StatusCode = (int)response.StatusCode
-                };
-            }
-
-            var resultSerializer = new XmlSerializer(typeof(Response));
-
-            var result = resultSerializer.Deserialize(await response.Content.ReadAsStreamAsync());
+            var result = await ISSClient.GetISSData(startDate, endDate);
 
             return new OkObjectResult(result);
         }
