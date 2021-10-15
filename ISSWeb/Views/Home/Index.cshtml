@@ -1,0 +1,257 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@*<div class="text-center">
+    <h1 class="display-4">Hackathon 2021 - Space Hack</h1>
+    <p><img src="~/images/Station.jpg" height="452" width="842" /></p>
+</div>*@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Earth View</title>
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <script type="module">
+        import * as THREE from './js/three.module.js';
+        import { TrackballControls } from './js/TrackballControls.js';
+        import { FBXLoader } from './js/FBXLoader.js';
+
+        let perspectiveCamera, controls, scene, renderer;
+
+
+        const frustumSize = 400;
+
+        init();
+        animate();
+
+        function perc2color(perc) {
+            let r = 0, g = 0, b = 0;
+            if (perc < 50) {
+                r = 255;
+                g = Math.round(5.1 * perc);
+            }
+            else {
+                g = 255;
+                r = Math.round(510 - 5.10 * perc);
+            }
+            let h = (r * 0x10000) + (g * 0x100) + (b * 0x1);
+            return h;
+        }
+
+
+        function signalFor(pos, power, frequency) {
+            const signalLength = power;
+            const signal = new THREE.Mesh(
+                new THREE.ConeGeometry(100, signalLength, 32),
+                new THREE.MeshPhongMaterial({ color: perc2color((frequency / 1000) * 100) })
+            );
+
+            signal.position.x = pos.x;
+            signal.position.y = pos.y;
+            signal.position.z = pos.z;
+
+            var issPosition = pos.clone();
+
+            // Arbitratry distance to look at
+            const distance = 10000;
+            var signalDirectionVector = issPosition.clone().normalize();
+            var signalDirection = new THREE.Vector3(
+                issPosition.x + (distance * signalDirectionVector.x),
+                issPosition.y + (distance * signalDirectionVector.y),
+                issPosition.z + (distance * signalDirectionVector.z));
+
+            signal.geometry.rotateX(-Math.PI * 0.5);
+            signal.geometry.translate(0, 0, signalLength / 2);
+            signal.lookAt(signalDirection);
+
+            return signal;
+        }
+
+        function init() {
+
+            const aspect = window.innerWidth / window.innerHeight;
+
+            perspectiveCamera = new THREE.PerspectiveCamera(45, aspect, 100, 10000000);
+            perspectiveCamera.position.x = 30000;
+            perspectiveCamera.up = new THREE.Vector3(0, 0, 1);
+
+            scene = new THREE.Scene();
+
+            scene.add(new THREE.AmbientLight(0xCCCCCC));
+
+            // const sunDistance = 1495978.70700;
+
+            var startTime = new Date(Date.now());
+            var endTime = new Date(startTime.getTime() + 1000 * 60 * 60 * 2);
+
+            const sphere = false;
+
+            //fetch(`https://localhost:44336/Home/GetData?start=${startTime.toISOString()}&end=${endTime.toISOString()}`)
+            fetch(`https://issweb.azurewebsites.net/Home/GetData?start=${startTime.toISOString()}&end=${endTime.toISOString()}`)
+                .then(resp => resp.json())
+                .then(resp => {
+                    if (sphere) {
+                        resp.result.data.forEach(dataResult => {
+                            dataResult.coordinates.forEach(coordinate => {
+                                for (let i = 0; i < coordinate.x.length; i++) {
+                                    const iss = new THREE.Mesh(
+                                        new THREE.SphereGeometry(100, 32, 32),
+                                        new THREE.MeshBasicMaterial({ color: 0x00eeff }));
+
+
+                                    iss.position.x = coordinate.x[i];
+                                    iss.position.y = coordinate.y[i];
+                                    iss.position.z = coordinate.z[i];
+                                    scene.add(iss);
+                                    scene.add(signalFor(
+                                        iss.position,
+                                        (Math.random() * 900) + 100,
+                                        (Math.random() * 900) + 100
+                                    ));
+                                }
+                            });
+                        });
+
+                    }
+                    else {
+                        const loader = new FBXLoader();
+
+                        // https://nasa3d.arc.nasa.gov/detail/iss-6628
+                        //loader.load('img/ISSComplete1.fbx', function (object) {
+                        loader.load('https://hackathonstg.blob.core.windows.net/fbx/ISSComplete1.fbx', function (object) {
+                            resp.result.data.forEach(dataResult => {
+                                dataResult.coordinates.forEach(coordinate => {
+                                    for (let i = 0; i < coordinate.x.length; i++) {
+                                        const iss = object.clone();
+                                        iss.position.x = coordinate.x[i];
+                                        iss.position.y = coordinate.y[i];
+                                        iss.position.z = coordinate.z[i];
+                                        iss.scale.x = 100;
+                                        iss.scale.y = 100;
+                                        iss.scale.z = 100;
+                                        scene.add(iss);
+                                        scene.add(signalFor(
+                                            iss.position,
+                                            (Math.random() * 900) + 100,
+                                            (Math.random() * 900) + 100
+                                        ));
+                                    }
+                                });
+                            });
+
+                        });
+                    }
+                });
+
+
+
+            const geometry = new THREE.ConeGeometry(5, 20, 32);
+            const material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+            const cone = new THREE.Mesh(geometry, material);
+            scene.add(cone);
+
+            // var light = new THREE.DirectionalLight(0xffffff, 1);
+            // light.position.set(sunDistance, 0, 0);
+            // scene.add(light);
+
+            var textureLoader = new THREE.TextureLoader();
+
+            const earthDiameter = 12742;
+
+            var earth = new THREE.Mesh(
+                new THREE.SphereGeometry(earthDiameter / 2, 64, 64),
+                new THREE.MeshPhongMaterial({
+                    map: textureLoader.load('img/earth4k.jpg'),
+                    bumpMap: textureLoader.load('img/earth4k-bump.jpg'),
+                    bumpScale: 100,
+                })
+            );
+
+            earth.rotation.x = Math.PI / 2;
+
+            scene.add(earth);
+
+            const xAxis = new THREE.Vector3(1, 0, 0);
+            const yAxis = new THREE.Vector3(0, 1, 0);
+            const zAxis = new THREE.Vector3(0, 0, 1);
+
+            const origin = new THREE.Vector3(0, 0, 0);
+            const length = 20000 / 2;
+
+            const xArrow = new THREE.ArrowHelper(xAxis, origin, length, 0xFF0000);
+            const yArrow = new THREE.ArrowHelper(yAxis, origin, length, 0x00FF00);
+            const zArrow = new THREE.ArrowHelper(zAxis, origin, length, 0x0000FF);
+            scene.add(xArrow);
+            scene.add(yArrow);
+            scene.add(zArrow);
+
+            // renderer
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            window.addEventListener('resize', onWindowResize);
+
+            createControls(perspectiveCamera);
+
+        }
+
+        function createControls(camera) {
+
+            controls = new TrackballControls(camera, renderer.domElement);
+
+            controls.rotateSpeed = 1.0;
+            controls.zoomSpeed = 1.2;
+            controls.panSpeed = 0.8;
+
+            controls.keys = ['KeyA', 'KeyS', 'KeyD'];
+
+        }
+
+        function onWindowResize() {
+
+            const aspect = window.innerWidth / window.innerHeight;
+
+            perspectiveCamera.aspect = aspect;
+            perspectiveCamera.updateProjectionMatrix();
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            controls.handleResize();
+
+        }
+
+        function animate() {
+
+            requestAnimationFrame(animate);
+
+            controls.update();
+
+            render();
+
+        }
+
+        function render() {
+
+            const camera = perspectiveCamera;
+
+            renderer.render(scene, camera);
+
+        }
+
+    </script>
+</body>
+
+</html>
