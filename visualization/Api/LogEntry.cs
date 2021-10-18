@@ -13,8 +13,8 @@ namespace Api
         public decimal SignalFrequency { get; set; }
         public decimal SignalPower { get; set; }
 
-        public decimal Latitude { get; set; }
-        public decimal Longitude { get; set; }
+        public decimal? Latitude { get; set; }
+        public decimal? Longitude { get; set; }
 
     }
 

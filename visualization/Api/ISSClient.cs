@@ -36,12 +36,12 @@ namespace Api
                         new FilteredCoordinateOptions
                         {
                             Component = CoordinateComponent.Lat,
-                            CoordinateSystem = CoordinateSystem.Gm
+                            CoordinateSystem = CoordinateSystem.Geo
                         },
                         new FilteredCoordinateOptions
                         {
                             Component = CoordinateComponent.Lon,
-                            CoordinateSystem = CoordinateSystem.Gm
+                            CoordinateSystem = CoordinateSystem.Geo
                         },
                         new FilteredCoordinateOptions
                         {

@@ -73,7 +73,7 @@ namespace Api
 
             var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
-                HasHeaderRecord = false,
+                HasHeaderRecord = false
             };
 
             using var csvData = new CsvReader(streamReader, csvConfig);
@@ -136,7 +136,7 @@ namespace Api
 
 
             var issRecords = dataResult.Data.Single();
-            var issCoordinates = issRecords.Coordinates.Where(c => c.CoordinateSystem == CoordinateSystem.Gm).Single();
+            var issCoordinates = issRecords.Coordinates.Single();
 
             var issRecordTimes = issRecords.Time.Select(t => DateTime.SpecifyKind(t, DateTimeKind.Utc)).OrderBy(t => t).ToList();
 
@@ -168,7 +168,7 @@ namespace Api
                     SignalFrequency = entry.SignalFrequency,
                     SignalPower = entry.SignalPower,
                     Latitude = (decimal)issCoordinates.Latitude[i],
-                    Longitude = (decimal)issCoordinates.Longitude[i]
+                    Longitude = (decimal)issCoordinates.Longitude[i] - 180 // It's in 0-360 format
                 };
             });
         }
